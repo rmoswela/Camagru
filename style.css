@@ -15,7 +15,7 @@ input[type=text], input[type=password]
 
 button
 {
-	background-color: #4CAF50;
+	background-color: #daa520;
 	color: white;
 	padding: 14px 20px;
 	margin: 8px 0;
@@ -33,25 +33,66 @@ button
 
 .imageContainer
 {
-	text-align: center;
-	margin: 24px 0 12px 0;
+	border-radius: 50%;
+	position: absolute;
+	margin: -40px 0 0 -80px;
+	height: 200px;
+	width: 200px;
+	left: 50%;
+	top: 20%;
+	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 }
 
 img.avatar
 {
-	width: 40%;
-	border-radius: 50%;
+	position: absolute;
+	width: 120px;
+	margin: 30px 0 0 40px;
 }
 
 .login 
 {
 	padding: 16px;
+	position: absolute;
+	width: 300px;
+	height: 220px;
+	top: 50%;
+	left: 50%;
+	margin: -100px 0 0 -150px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-span.forgotPswd 
+.links
+{
+	padding: 16px;
+	position: absolute;
+	width: 300px;
+	height: 30px;
+	top: 51%;
+	left: 50%;
+	margin: 150px 0 0 -152px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cancel 
+{
+	padding: 16px;
+	position: absolute;
+	width: 300px;
+	height: 50px;
+	top: 55%;
+	left: 50%;
+	margin: 190px 0 0 -150px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.forgotPswd 
 {
 	float: right;
-	padding-top: 16px;
+	/*padding-top: 16px;
+	text-indent: 5em;*/
 }
 
 /* Change styles for span and cancel button on extra small screens */
@@ -61,9 +102,9 @@ span.forgotPswd
 	{
 		display: block;
 		float: none;
-	}
-	.cancelbtn 
-	{
-		width: 100%;
-	}
+}
+.cancelbtn 
+{
+	width: 100%;
+}
 }
