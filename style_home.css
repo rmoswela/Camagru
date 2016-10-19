@@ -13,3 +13,18 @@
 	height: 375px;
 	background-color: #666;
 }
+
+.grayscale
+{
+	+filter: grayscale(1);
+}
+
+.blur
+{
+	+filter: blur(3px);
+}
+
+.sepia
+{
+	+filter: sepia(1);
+}
