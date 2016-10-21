@@ -1,5 +1,5 @@
 <?php
-function error ($msg)
+function errorFunc($msg)
 {
 ?>
 <html>
@@ -14,7 +14,7 @@ function error ($msg)
 <body>
 </body>
 </html>
-<?
+<?php
 	exit;
 }
 ?>

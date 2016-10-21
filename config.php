@@ -17,7 +17,7 @@ try
 											lastname VARCHAR(30) NOT NULL, 
 											username VARCHAR(30) NOT NULL UNIQUE, 
 											userEmail VARCHAR(30) NOT NULL UNIQUE, 
-											password VARCHAR(20) NOT NULL,
+											password VARCHAR(100) NOT NULL,
 											reg_date DATETIME,
 											PRIMARY KEY(id));";
 
