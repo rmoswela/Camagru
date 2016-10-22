@@ -1,5 +1,25 @@
 <?php
-function errorFunc($msg)
+function goodAlert($msg)
+{
+?>
+<html>
+<head>
+	<script language="javascript">
+	<!--
+		alert("<?=$msg?>");
+	//-->
+		</script>
+</head>
+<body>
+</body>
+</html>
+<?php
+	exit;
+}
+?>
+
+<?php
+function badAlert($msg)
 {
 ?>
 <html>

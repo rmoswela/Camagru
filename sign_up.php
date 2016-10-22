@@ -11,17 +11,26 @@ if (isset($_SESSION['username']) != "")
 require_once('database.php');
 include 'alert.php';
 
+/*$_POST['fname'] = 'temogo';
+$_POST['lname'] = 'moswela';
+$_POST['uname'] = 'tmg21';
+$_POST['pword'] = 'temogo12345!';
+$_POST['cfpword'] = 'temogo12345!';
+$_POST['email'] = 'tmgsibanda@gmail.com';
+$_POST['submit'] = 'ok';*/
+
 try
 {
 	//create a new instance 
 	$db = new PDO("mysql:$dsn", $user, $password);
 
-	$db->query("USE camagru;");
+	$query = $db->prepare("USE camagru;");
+	$query->execute();
 	$error = false;
 
 	if (isset($_POST['submit']) == 'ok')
 	{
-		print_r($_POST);
+		//print_r($_POST);
 		//prevention against sql injections
 		$firstname = trim($_POST['fname']);
 		$firstname = strip_tags($firstname);
@@ -49,11 +58,13 @@ try
 		{
 			$error = true;
 			$nameError = "Please enter your names";
+			errorFunc($nameError);
 		}
 		else if (!preg_match("/^[a-zA-Z]+$/", $firstname) || !preg_match("/^[a-zA-Z]+$/", $lastname))
 		{
 			$error = true;
 			$nameError = "Names must contain letters and spaces";
+			errorFunc($nameError);
 		}
 
 		//email validation
@@ -61,6 +72,7 @@ try
 		{
 			$error = true;
 			$emailError = "Please enter a valid email address";
+			errorFunc($emailError);
 		}
 		else
 		{
@@ -116,13 +128,13 @@ try
 
 		if (!$error)
 		{
-			$result = $db->prepare("INSERT INTO users (firstname, lastname, username, userEmail, password) 
-				VALUES ('$firstname', '$lastname', '$username', '$email', '$passw')") or die("failed query". $db->errorInfo());
+			$result = $db->prepare("INSERT INTO Users (firstname, lastname, username, userEmail, password) 
+				VALUES ('$firstname', '$lastname', '$username', '$email', '$passw');") or die("failed query". $db->errorInfo());
 			$result->execute();
 			if ($result)
 			{
 				$errMSG = "Successfully logged in";
-				errorFunc($errMSG);
+				//errorFunc($errMSG);
 				header('Location: home.html');
 				/*unset($fname);
 				unset($lname);
