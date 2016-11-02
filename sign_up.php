@@ -1,158 +1,33 @@
-<?php
-//start session
-session_start();
-
-//check if user is already connect
-if (isset($_SESSION['username']) != "")
-{
-	header('Location: home.php');
-}
-//call the database and error file
-require_once('database.php');
-include 'alert.php';
-
-/*$_POST['fname'] = 'temogo';
-$_POST['lname'] = 'moswela';
-$_POST['uname'] = 'tmg21';
-$_POST['pword'] = 'temogo12345!';
-$_POST['cfpword'] = 'temogo12345!';
-$_POST['email'] = 'tmgsibanda@gmail.com';
-$_POST['submit'] = 'ok';*/
-
-try
-{
-	//create a new instance 
-	$db = new PDO("mysql:$dsn", $user, $password);
-
-	$query = $db->prepare("USE camagru;");
-	$query->execute();
-	$error = false;
-
-	if (isset($_POST['submit']) == 'ok')
-	{
-		//print_r($_POST);
-		//prevention against sql injections
-		$firstname = trim($_POST['fname']);
-		$firstname = strip_tags($firstname);
-		$firstname = htmlspecialchars($firstname);
-
-		$lastname = trim($_POST['lname']);
-		$lastname = strip_tags($lastname);
-		$lastname = htmlspecialchars($lastname);
-
-		$email = trim($_POST['email']);
-		$email = strip_tags($email);
-		$email = htmlspecialchars($email);
-		//echo $email ."\n";
-
-		$username = trim($_POST['uname']);
-		$username = strip_tags($username);
-		$username = htmlspecialchars($username);
-		//$username = filter_var($username, FILTER_FLAG_STRIP_LOW);
-
-		$password = $_POST['pword'];
-		$confirmPass = $_POST['cfpword'];
-
-		//names validation
-		if (empty($firstname) || empty( $lastname))
-		{
-			$error = true;
-			$nameError = "Please enter your names";
-			errorFunc($nameError);
-		}
-		else if (!preg_match("/^[a-zA-Z]+$/", $firstname) || !preg_match("/^[a-zA-Z]+$/", $lastname))
-		{
-			$error = true;
-			$nameError = "Names must contain letters and spaces";
-			errorFunc($nameError);
-		}
-
-		//email validation
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-		{
-			$error = true;
-			$emailError = "Please enter a valid email address";
-			errorFunc($emailError);
-		}
-		else
-		{
-			//echo $email ."\n";
-			//check if email exists or not
-			$result = $db->prepare("SELECT userEmail FROM Users WHERE userEmail='$email';"); 
-			$result->execute(array("email"=>$email));
-			$row = $result->fetch(PDO::FETCH_ASSOC);
-			//$count = (int)$result->fetchAll();
-			//echo "1\n";
-			//print_r($count);
-			//echo "\n2\n";
-			//echo $count ."\n";
-
-			if ($result->rowCount() > 0)
-			{
-				$error = true;
-				$emailError = "Provided email is already in use.";
-				errorFunc($emailError);
-			}
-		}
-
-		if ($username)
-		{
-			//check if username exists or not
-			$res = $db->prepare("SELECT username FROM Users WHERE username ='$username';"); 
-			$res->execute(array("uname"=>$username));
-			$catch = $res->fetch(PDO::FETCH_ASSOC);
-			
-			if ($res->rowCount() > 0)
-			{
-				$error = true;
-				$unameError = "Provided username is already in use.";
-				errorFunc($unameError);
-			}
-		}
-
-		//password validation
-		if (isset($_POST['pword']) && isset($_POST['cfpword']))
-		{
-			if ($password !== $confirmPass)
-			{
-				$error = true;
-				$passwordError = "Your Password and Confirmation Password do not match.";
-				errorFunc($passwordError);
-			}
-			else
-			{
-				//encrypt password
-				$passw = hash('sha256', $password);
-			}
-		}
-
-		if (!$error)
-		{
-			$result = $db->prepare("INSERT INTO Users (firstname, lastname, username, userEmail, password) 
-				VALUES ('$firstname', '$lastname', '$username', '$email', '$passw');") or die("failed query". $db->errorInfo());
-			$result->execute();
-			if ($result)
-			{
-				$errMSG = "Successfully logged in";
-				//errorFunc($errMSG);
-				header('Location: home.html');
-				/*unset($fname);
-				unset($lname);
-				unset($uname);
-				unset($email);
-				unset($password);*/
-			}
-			else
-			{
-				$errMSG = "Something went wrong";
-				errorFunc($errMSG);
-			}
-
-		}
-	}
-}
-catch(PDOException $e)
-{
-	die ("failed to connect: " .$e->getMessage());
-}
-?>
+<?php include 'details_welcome.php' ?>
+<html>
+	<head>
+		<title>SignUp Camagru</title>
+		<link rel="stylesheet" type="text/css" href="css_style/up_style.css">
+	</head>
+	<body>
+		<div class = "imageContainer">
+			<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMIHcGO1-KSDnJuGlo53o2fPA_FsEiuN5Xlbh7fnYq7WQOW3Br" class="avatar">
+		</div>
+		<form action="signupScript.php" method="post">
+			<div class = "login">
+				<label><b>Firstame</b></label>
+				<input type="text" placeholder="Enter username" name="fname" pattern=".{3,}" title="Must contain atlest 3 or more characters" required>
+				<label><b>Lastname</b></label>
+				<input type="text" placeholder="Enter username" name="lname" pattern=".{3,}" title="Must contain atlest 3 or more characters" required>
+				<label><b>Email Address</b></label>
+				<input type="text" placeholder="Enter your email address" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
+				<label><b>Username</b></label>
+				<input type="text" placeholder="Enter username" name="uname" pattern=".{3,}" title="Must contain atlest 3 or more characters" required>
+				<label><b>Password</b></label>
+				<input type="password" placeholder="Enter password" name="pword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+				<label><b>Confirm Password</b></label>
+				<input type="password" placeholder="Confirm password" name="cfpword" required>
+				<button type = "submit" name="submit" value = "ok">Sign Up</button>
+				<span><button type="button" name = "cancel" value = "ok" class="cancelbtn">Cancel</button></span>
+			</div>
+			<div class = "links">
+				Already have Account? <a href="login.html">Sign in</a>
+			</div>
+		</form>
+	</body>
+</html>

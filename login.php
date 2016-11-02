@@ -1,76 +1,23 @@
-<?php
-//start session
-session_start();
-
-include 'alert.php';
-require_once('database.php');
-
-//check if user is already connect
-if (isset($_SESSION['uname']) != "")
-{
-	header('Location: home.php');
-}
-
-$error = false;
-
-if (isset($_POST['submit']) == 'ok')
-{
-	//prevention against sql injections
-	/*$email = trim($_POST['email']);
-	$email = strip_tags($email);
-	$email = htmlspecialchars($email);*/
-
-	$username = trim($_POST['uname']);
-	$username = strip_tags($username);
-	$username = htmlspecialchars($username);
-
-	$pass = $_POST['pword'];
-
-	//email validation
-	/*if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-	{
-		$error = true;
-		$emailError = "Please enter a valid email address";
-	}*/
-
-	//password validation
-	if (!isset($_POST['pword']))
-	{
-		$error = true;
-		$passwordError = "Please fill in the password field";
-		errorFunc($passwordError);
-	}
-
-	if (!$error)
-	{
-		try 
-		{
-			
-		$db = new PDO("mysql:$dsn", $user, $password);
-
-		$db->query("Use camagru;");
-
-		$passw = hash('sha256', $pass);
-
-		$result = $db->prepare("SELECT username, userEmail, password 
-		   					FROM Users WHERE username='$username';");	
-		$result->execute(array("uname"=>$username));
-		$row = $result->fetch(PDO::FETCH_ASSOC);
-		//echo $result->rowCount() ."\n";
-		if ($result->rowCount() === 1 && $row['password'] === $passw && $row['username'] === $username)
-		{
-			$_SESSION['user'] = $row[0]['username'];
-			header('Location: home.html');
-		}
-		else
-		{
-			errorFunc("Check your password or username and try again! :-)");
-		}
-		}
-		catch(PDOException $e)
-		{
-			die ("failed to connect: " .$e->getMessage());
-		}
-	}
-}
-?>
+<?php include 'details_welcome.php' ?>
+<html>
+	<head>
+		<title>Login Camagru</title>
+		<link rel="stylesheet" type="text/css" href="css_style/in_style.css">
+	</head>
+	<body>
+				<form action="loginScript.php" method="post">
+					<div class = "login">
+						<label><b>Username</b></label>
+						<input type="text" placeholder="Enter username" name="uname" required>
+						<label><b>Password</b></label>
+						<input type="password" placeholder="Enter password" name="pword" required>
+						<button type = "submit" name="submit" value= "ok">Login</button>
+						<input type="checkbox" checked="checked">Remember me
+					</div>
+					<div class = "links">
+						New to Camagru? <a href="sign_up.php">Sign up</a>
+						<a class="forgotPswd" href="#">Forgot Password</a>
+					</div>
+				</form>
+	</body>
+</html>

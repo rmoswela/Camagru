@@ -18,7 +18,7 @@ try
 											username VARCHAR(30) NOT NULL UNIQUE, 
 											userEmail VARCHAR(30) NOT NULL UNIQUE, 
 											password VARCHAR(100) NOT NULL,
-											reg_date DATETIME,
+											reg_date DATETIME NOT NULL,
 											PRIMARY KEY(id));";
 
 	$db->query($users) or die(print_r($db->errorInfo(), true));
